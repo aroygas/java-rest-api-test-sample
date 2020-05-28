@@ -2,18 +2,11 @@ package steps.api;
 
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-
 import io.restassured.response.Response;
-import io.restassured.response.ValidatableResponse;
 import utils.ConfigReader;
-
 import java.util.Properties;
-
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * All Cucumber steps are implemented in this class.
