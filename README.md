@@ -38,7 +38,7 @@ Test suite for a particular run is managed by mentioned tags. <br>
 There are a lot of tags and they follow the rules: <br>
 `@smoke`                                 - run only tests tagged as @smoke <br>
 `not @regression`                     - exclude tests tagged as @regression from run <br>
-`@negative or @reservations`    - run tests tagged as @negative OR tagged as @reservations <br>
+`@negative or @regression`    - run tests tagged as @negative OR tagged as @regression <br>
 `@smoke and @negative` - run tests tagged as @smoke AND tagged as @negative <br>
 `@smoke and not @negative`  - run tests tagged as @smoke AND exclude tests tagged as @negative from the run <br>
 
