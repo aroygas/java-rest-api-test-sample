@@ -52,19 +52,6 @@ public class CucumberStepDefinitions {
     }
 
     /**
-     * Verify that task with name specified exists
-     * @param taskName - a name of a task that should be found in response body
-     */
-    @Then("I should see created task named {string} in tasks list")
-    public void iShouldSeeCreatedTaskNamedInTasksList(String taskName) {
-        given().
-                auth().oauth2(personalAPIToken).
-                get(hostAPIBaseURL+"tasks").
-                then().
-                assertThat().body(containsString(taskName));
-    }
-
-    /**
      * According to Cucumber philosophy checks should be done in separate steps that start with @Then annotation
      * Check that actual code matches
      * @param statusCode - desired status code

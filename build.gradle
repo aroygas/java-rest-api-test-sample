@@ -22,16 +22,12 @@ wrapper.gradleVersion = '5.5.1'
 def cucumberVersion = '4.8.1'
 def junitVersion = '5.5.0'
 def allureVersion = '2.13.3'
-def lombokVersion = '1.18.12'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compileOnly "org.projectlombok:lombok:${lombokVersion}"
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-
     testImplementation 'io.rest-assured:rest-assured:4.2.0'
 
     testImplementation "io.cucumber:cucumber-java:${cucumberVersion}"
@@ -67,7 +63,7 @@ test {
     }
     systemProperty "cucumber.options", cucumberOptions
 
-    //Adds a little bit of transparency in gradle console test run because Cucumber hides all the test output
+    //Adding a little bit of transparency in gradle console test run because Cucumber hides all the test output
     testLogging {
         events "passed", "skipped", "failed", "standardOut", "standardError"
     }

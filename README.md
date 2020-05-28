@@ -25,7 +25,7 @@ git clone https://github.com/aroygas/java-rest-api-test-sample.git
 
 # Running tests #
 
-Test are ran using gradle "test" task.
+Test are ran using gradle "test" task.<br>
 To run all the tests just call gradle with "clean test" command:
 ```
 gradle clean test
@@ -60,7 +60,7 @@ allure serve ./build/allure-results
 
 # Test scenarios Create a new task
 
-Same cases can be found in resources\features\Test.feature
+Same cases can be found in resources\features\Test.feature <br>
 It is suggested to read them in some cucumber highlighting tool like IntelliJ IDEA with Cucumber plugin.
 
 ```
