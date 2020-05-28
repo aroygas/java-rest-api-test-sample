@@ -1,0 +1,69 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "io.qameta.allure:allure-gradle:2.8.1"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'io.qameta.allure'
+
+group 'aroygas.qa.example'
+version '1.0-SNAPSHOT'
+
+// Versioning of dependencies
+wrapper.gradleVersion = '5.5.1'
+def cucumberVersion = '4.8.1'
+def junitVersion = '5.5.0'
+def allureVersion = '2.13.3'
+def lombokVersion = '1.18.12'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+
+    testImplementation 'io.rest-assured:rest-assured:4.2.0'
+
+    testImplementation "io.cucumber:cucumber-java:${cucumberVersion}"
+    testImplementation "io.cucumber:cucumber-junit:${cucumberVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:${junitVersion}"
+
+    testImplementation"io.qameta.allure:allure-junit5:${allureVersion}"
+    testCompile "io.qameta.allure:allure-cucumber4-jvm:${allureVersion}"
+
+}
+
+allure {
+    version = allureVersion
+    aspectjweaver = true
+    autoconfigure = false
+    aspectjVersion = '1.9.1'
+    useJUnit5 { version = allureVersion }
+}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+
+test {
+    String cucumberOptions = "--plugin io.qameta.allure.cucumber4jvm.AllureCucumber4Jvm"
+    systemProperty "cucumber.options", cucumberOptions
+    //Adds a little bit of transparency in gradle console test run because Cucumber hides all the test output
+    testLogging {
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+    }
+}
