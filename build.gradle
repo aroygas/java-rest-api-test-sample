@@ -61,7 +61,12 @@ configurations {
 
 test {
     String cucumberOptions = "--plugin io.qameta.allure.cucumber4jvm.AllureCucumber4Jvm"
+    String tags = System.getProperty("tags")
+    if (tags != null && !tags.isEmpty()){
+        cucumberOptions += ' --tags "' + tags + '"'
+    }
     systemProperty "cucumber.options", cucumberOptions
+
     //Adds a little bit of transparency in gradle console test run because Cucumber hides all the test output
     testLogging {
         events "passed", "skipped", "failed", "standardOut", "standardError"
