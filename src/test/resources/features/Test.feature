@@ -1,4 +1,4 @@
-Feature: Creates a new task on Todoist
+Feature: Create a new task on Todoist
   As a user
   In order to create a new task
   I need to send POST request using Todoist API

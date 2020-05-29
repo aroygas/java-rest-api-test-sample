@@ -63,7 +63,7 @@ Same cases can be found in resources\features\Test.feature <br>
 Scenarios look much better in some cucumber highlighting tool like IntelliJ IDEA with Cucumber plugin.
 
 ```
-Feature: Creates a new task on Todoist
+Feature: Create a new task on Todoist
   As a user
   In order to create a new task
   I need to send POST request using Todoist API
