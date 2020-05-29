@@ -16,9 +16,9 @@ Feature: Create a new task on Todoist
     "project_id": 2237019745,
     "section_id": 0,
     "parent": 3929864419,
-    "order": 1,
+    "order": 100,
     "label_ids": [],
-    "priority": 2,
+    "priority": 4,
     "due_lang": "en",
     "due_date": "2020-09-27"
     }
@@ -30,7 +30,6 @@ Feature: Create a new task on Todoist
     When I create a task with data:
     """
     {"content": "Due string",
-    "priority": 2,
     "due_lang": "en",
     "due_string": "next Monday"
     }
@@ -42,7 +41,6 @@ Feature: Create a new task on Todoist
     When I create a task with data:
     """
     {"content": "Due datetime",
-    "priority": 2,
     "due_lang": "en",
     "due_datetime": "2021-05-04T01:23:45.01+07:00"
     }
@@ -105,7 +103,6 @@ Feature: Create a new task on Todoist
     When I create a task with data:
     """
     {"content": "Due string and date",
-    "priority": 2,
     "due_lang": "en",
     "due_date": "2022-01-23",
     "due_string": "Tomorrow"
