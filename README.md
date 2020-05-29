@@ -1,6 +1,6 @@
 # java-rest-api-test-sample
 
-This is a sample Java based project for API tests of Todoist Create new task method. 
+This is a sample Java based project for API tests of Todoist "Create new task" method. 
 
 It uses REST Assured, Cucumber, JUnit, Allure and Gradle.
 
@@ -25,8 +25,7 @@ git clone https://github.com/aroygas/java-rest-api-test-sample.git
 
 # Running tests #
 
-Test are ran using gradle "test" task.<br>
-To run all the tests just call gradle with "clean test" command:
+To run all the tests just call gradle at project's root with "clean test" command:
 ```
 gradle clean test
 ```
@@ -34,13 +33,13 @@ gradle clean test
 ## Tags ##
 
 Each scenario has some set of tags. <br>
-Test suite for a particular run is managed by mentioned tags. <br>
-There are a lot of tags and they follow the rules: <br>
+Test suites are managed by mentioning tags. <br>
+Tags follow the rules: <br>
 `@smoke`                                 - run only tests tagged as @smoke <br>
 `not @regression`                     - exclude tests tagged as @regression from run <br>
 `@negative or @regression`    - run tests tagged as @negative OR tagged as @regression <br>
 `@smoke and @negative` - run tests tagged as @smoke AND tagged as @negative <br>
-`@smoke and not @negative`  - run tests tagged as @smoke AND exclude tests tagged as @negative from the run <br>
+`@smoke and not @clean`  - run tests tagged as @smoke AND exclude tests tagged as @clean from the run <br>
 
 So, to run only smoke tests run:
 ```
@@ -51,17 +50,17 @@ gradle clean test -Dtags="@smoke"
 
 # Generating html report #
 
-To generate a report using Allure run:
+To generate a report using Allure at project's root run:
 ```
 allure serve ./build/allure-results
 ```
 
 ---
 
-# Test scenarios Create a new task
+# Test scenarios for "Create a new task" method
 
 Same cases can be found in resources\features\Test.feature <br>
-It is suggested to read them in some cucumber highlighting tool like IntelliJ IDEA with Cucumber plugin.
+Scenarios look much better in some cucumber highlighting tool like IntelliJ IDEA with Cucumber plugin.
 
 ```
 Feature: Creates a new task on Todoist
