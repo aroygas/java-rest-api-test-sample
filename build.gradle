@@ -38,7 +38,6 @@ dependencies {
 
     testImplementation"io.qameta.allure:allure-junit5:${allureVersion}"
     testCompile "io.qameta.allure:allure-cucumber4-jvm:${allureVersion}"
-
 }
 
 allure {

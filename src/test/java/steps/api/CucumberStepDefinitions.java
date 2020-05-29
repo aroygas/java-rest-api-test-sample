@@ -1,10 +1,17 @@
 package steps.api;
 
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.restassured.RestAssured;
+import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
 import utils.ConfigReader;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
+
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 
@@ -24,6 +31,14 @@ public class CucumberStepDefinitions {
         Properties properties = new ConfigReader().getPropValues();
         hostAPIBaseURL = properties.getProperty("hostAPIBaseURL");
         personalAPIToken = properties.getProperty("personalAPIToken");
+    }
+
+    /**
+     * Cucumber "Before" hook that is executed before each suite run.
+     */
+    @Before
+    public void setUp(){
+        iCleanUpTasks();
     }
 
     /**
@@ -55,6 +70,27 @@ public class CucumberStepDefinitions {
     }
 
     /**
+     * Delete all tasks that might have been created during this test
+     */
+    @When("I clean up test tasks")
+    public void iCleanUpTasks() {
+        String[] createdTestTasksNames = {
+                "Simple task",
+                "Complex task",
+                "Due string",
+                "Due datetime",
+                "01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123457012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234501234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123450123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234501234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123450123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234",
+                "'`@#$%^&*()_+><:\"}{?:",
+                "Due date in far future",
+                "Due date in far past",
+                "Invalid section id",
+                "Invalid order",
+                "Invalid due_lang"
+        };
+        cleanUpTasksWithNames(createdTestTasksNames);
+    }
+
+    /**
      * Method that actually sends a Create New Task POST request with
      * @param body - parameters of a new task
      * @return response object
@@ -65,5 +101,46 @@ public class CucumberStepDefinitions {
                 contentType(JSON).
                 body(body).
                 post(hostAPIBaseURL+"tasks");
+    }
+
+    /**
+     * Get a list of all active tasks
+     * @return - Response object
+     */
+    private Response getAllActiveTasksList () {
+        RestAssured.defaultParser = Parser.JSON;
+        return given().
+                auth().oauth2(personalAPIToken).
+                get(hostAPIBaseURL+"tasks").
+                then().contentType(JSON).extract().response();
+    }
+
+    /**
+     * Delete a task with id
+     * @param id - id of a task to be deleted
+     */
+    private void deleteTaskById (long id) {
+        given().
+                auth().oauth2(personalAPIToken).
+                delete(hostAPIBaseURL+"tasks/" + id).
+                then().assertThat().statusCode(204);
+    }
+
+    /**
+     * Method that actually deletes tasks by id when if name matches one from the list
+     * @param taskNames - list of task"content" field values to be matched
+     */
+    private void cleanUpTasksWithNames(String[] taskNames) {
+        response = getAllActiveTasksList();
+        List<String> jsonResponse = response.jsonPath().getList("$");
+
+        for (int i = 0; i < jsonResponse.size(); i++) {
+            String task_name = response.jsonPath().getString("content[" + i + "]");
+            String task_id = response.jsonPath().getString("id[" + i + "]");
+            if (Arrays.asList(taskNames).contains(task_name)) {
+                System.out.println(task_name + " : " + task_id);
+                deleteTaskById(Long.parseLong(task_id));
+            }
+        }
     }
 }
