@@ -1,11 +1,12 @@
 package steps.api;
 
-import io.cucumber.java.Before;
+import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.RestAssured;
 import io.restassured.parsing.Parser;
 import io.restassured.response.Response;
+import org.junit.Assert;
 import utils.ConfigReader;
 
 import java.util.Arrays;
@@ -60,6 +61,20 @@ public class CucumberStepDefinitions {
     @Then("I should see a {int} status code in response")
     public void iShouldSeeAStatusCodeInResponse(int statusCode) {
         response.then().assertThat().statusCode(statusCode);
+    }
+
+    /**
+     * CHeck value in response
+     * @param fieldValue - expected value
+     * @param fieldName - name of field to check
+     */
+    @And("I should see {string} in {string} field")
+    public void iShouldSeeInField(String fieldValue, String fieldName) {
+        if (fieldName.contains("due")){
+            fieldName = fieldName.replace("_", ".");
+        }
+        String value = response.jsonPath().getString(fieldName);
+        Assert.assertEquals(fieldValue, response.jsonPath().getString(fieldName));
     }
 
     /**

@@ -7,6 +7,7 @@ Feature: Create a new task on Todoist
   Scenario: Create a simple task with single mandatory content field
     When I create a task named "Simple task"
     Then I should see a 200 status code in response
+    And I should see "Simple task" in "content" field
 
   @regression
   Scenario: Create a complex task with all fields set
@@ -24,6 +25,12 @@ Feature: Create a new task on Todoist
     }
     """
     Then I should see a 200 status code in response
+    And I should see "Complex task" in "content" field
+    And I should see "2237019745" in "project_id" field
+    And I should see "3929864419" in "parent" field
+    And I should see "100" in "order" field
+    And I should see "1" in "priority" field
+    And I should see "2020-09-27" in "due_date" field
 
   @regression
   Scenario: Create a task with due_string
@@ -35,6 +42,7 @@ Feature: Create a new task on Todoist
     }
     """
     Then I should see a 200 status code in response
+    And I should see "next Monday" in "due_string" field
 
   @regression
   Scenario: Create a task with due_datetime
@@ -46,6 +54,9 @@ Feature: Create a new task on Todoist
     }
     """
     Then I should see a 200 status code in response
+    And I should see "2021-05-03" in "due_date" field
+    And I should see "2021-05-03T18:23:45Z" in "due_datetime" field
+    And I should see "Europe/Moscow" in "due_timezone" field
 
   @edge  @regression
   Scenario: Create a task with highest priority
@@ -56,6 +67,7 @@ Feature: Create a new task on Todoist
     }
     """
     Then I should see a 200 status code in response
+    And I should see "4" in "priority" field
 
   @edge  @regression
   Scenario: Create a task with very long content string
@@ -65,20 +77,22 @@ Feature: Create a new task on Todoist
     }
     """
     Then I should see a 200 status code in response
+    And I should see "01234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123457012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234501234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123450123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234501234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123450123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234" in "content" field
 
   @edge  @regression
   Scenario: Create a task with content string containing special characters
     When I create a task with data:
     """
-    {"content": "'`@#$%^&*()_+><:"}{?:"
+    {"content": "'`@#$%^&*()_+><:}{?:"
     }
     """
     Then I should see a 200 status code in response
+    And I should see "'`@#$%^&*()_+><:}{?:" in "content" field
 
   #Wrong section number is ignored and section_id=0 is given instead.
   #Such behaviour should be discussed with developers.
-  #This one might be a bug!
-  @negative  @regression
+  #This one might be a bug! This test will fail
+  @negative  @regression @bug
   Scenario: Send invalid section id
     When I create a task with data:
     """
@@ -87,6 +101,7 @@ Feature: Create a new task on Todoist
     }
     """
     Then I should see a 200 status code in response
+    And I should see "0" in "section_id" field
 
   @negative  @regression
   Scenario: Send empty request
