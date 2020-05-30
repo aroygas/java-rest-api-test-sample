@@ -109,6 +109,7 @@ Feature: Create a new task on Todoist
     """
     """
     Then I should see a 400 status code in response
+    And I should see "Empty content" message in response
 
   @negative  @regression
   Scenario: Send some parameters without mandatory one
@@ -121,6 +122,7 @@ Feature: Create a new task on Todoist
     }
     """
     Then I should see a 400 status code in response
+    And I should see "Empty content" message in response
 
   @negative  @regression
   Scenario: Send due_string and due_date at the same time
@@ -133,6 +135,7 @@ Feature: Create a new task on Todoist
     }
     """
     Then I should see a 400 status code in response
+    And I should see "Only one of due_string, due_date or due_datetime can be set" message in response
 
   @negative  @regression
   Scenario: Send invalid priority id
@@ -143,6 +146,7 @@ Feature: Create a new task on Todoist
     }
     """
     Then I should see a 400 status code in response
+    And I should see "Unsupported priority value" message in response
 
   #Checking JSON type of parameters validation actually
   @negative  @regression
@@ -154,6 +158,7 @@ Feature: Create a new task on Todoist
     }
     """
     Then I should see a 400 status code in response
+    And I should see "JSON decode error: unexpected string at pos 55" message in response
 
   @negative  @regression
   Scenario: Send invalid due_string
@@ -164,6 +169,7 @@ Feature: Create a new task on Todoist
     }
     """
     Then I should see a 400 status code in response
+    And I should see "Date is invalid" message in response
 
   @negative  @regression
   Scenario: Send due_date with wrong day number
@@ -174,6 +180,7 @@ Feature: Create a new task on Todoist
     }
     """
     Then I should see a 400 status code in response
+    And I should see "due_date not in YYYY-MM-DD format" message in response
 
   @negative  @regression
   Scenario: Send empty content string
@@ -183,6 +190,7 @@ Feature: Create a new task on Todoist
     }
     """
     Then I should see a 400 status code in response
+    And I should see "Empty content" message in response
 
   @negative  @regression
   Scenario: Send SQL injection
@@ -193,6 +201,7 @@ Feature: Create a new task on Todoist
     }
     """
     Then I should see a 400 status code in response
+    And I should see "JSON decode error: unexpected string at pos 131" message in response
 
   ############################################################################
   # It looks like a small bug with following cases - the situation with invalid Ids is not handled by backend.

@@ -15,6 +15,7 @@ import java.util.Properties;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
+import static org.hamcrest.CoreMatchers.containsString;
 
 /**
  * All Cucumber steps are implemented in this class.
@@ -63,6 +64,16 @@ public class CucumberStepDefinitions {
         response.then().assertThat().statusCode(statusCode);
     }
 
+
+    /**
+     * Check that text of a body in response contains message
+     * @param message - expected message
+     */
+    @And("I should see {string} message in response")
+    public void iShouldSeeInResponse(String message) {
+        response.then().assertThat().body(containsString(message));
+    }
+
     /**
      * CHeck value in response
      * @param fieldValue - expected value
@@ -73,7 +84,6 @@ public class CucumberStepDefinitions {
         if (fieldName.contains("due")){
             fieldName = fieldName.replace("_", ".");
         }
-        String value = response.jsonPath().getString(fieldName);
         Assert.assertEquals(fieldValue, response.jsonPath().getString(fieldName));
     }
 
